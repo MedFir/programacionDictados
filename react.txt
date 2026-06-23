@@ -1,0 +1,217 @@
+React.js - 15/04/2026
+Indtroduccion y funcionamiento
+React es una libreria de javascript desarrollada por meta (antes facebook), cuyo objetivo principal es facilitar la construccion de interaces de usuario de manera rapida, eficiente y modular. Se utiliza principalmente para desarrollar aplicaciones web de una sola pagina, conocidas como SPA (Single Page Applications), aunque tambien puede ser usada junto a otras librerias para el manejo de rutas. Ademas, se puede usar en aplicaciones moviles y de escritorio mediante otras tecnologias relacionadas.
+React funciona basandose en el concepto de componentes. Cada componente es una pieza de codigo que representa una parte especifica dela interfaz de usuario, pudiendo tener su propio estado interno, recibiendo datos desde el exterior, renderizando elementos HTML y con metodos propios.
+Una de las caracteristicas que distingue a React es el uso de un virtualDOM. Es una representacion en memoria de la estructura del DOM real, que permite identificar y actualizar solo los elementos necesarios cuando el estado de la aplicacion cambia, logrando asi un rendimiento superior al de la manipulacion directa del DOM tradicional.
+Ademas de javascript, react utiliza una sintaxis llamada .JSX, que permite escribir codigo similar a HTML dentro de archivos JS. JSX facilita la construccion de componentes, haciendo mas lejible y estructurado el desarrollo de las interfaces. Por ejemplo: Un componente simple que muestra un saludo puede ser:
+function Saludar(){
+	return(<h1> Hola mundo! </h1>);
+}
+JSX no es entendido directamente por el navegador para ser ejecutado, por lo cual se debe transformar en funciones de JS puras al finalizar el proyecto o mientras se desarrolla.
+
+Inicializacion de proyectos y gestion de dependencias.
+Para comenzar un proyecto de React utilizamos 'vite', una herramienta de construccion rapida que simplifica la configuracion y ofrece un buen rendimiento durante el desarrollo. Para incializar un proyecto con vite, se utiliza el siguiente comando en la terminal:
+npm create vite@latest nombre-proyecto
+luego, mientras se desarrolla, se debe utilizar el comando:
+npm run dev
+y para transpilar el proyecto obteniendo un directorio de archivos listos para produccion, se debe utilizar:
+npm run build
+Una vez creado el proyecto, la gestion de todas las librerias y paquetes de 3ros serealiza a travez de npm (node package manager), que es el gestor de paquetes por defecto para el entorno de node.js. Para instalar las dependencias necesarias se utiliza el comando:
+npm install nombre.libreria
+O aquellas definidas en el archivo package.json del proyecto, simplemente se ejectua 'npm install' o su vercion abreviada 'npm i'. Este comando lee el archivo de configuraion y descarga todos los modulos requeridos, ubicandolos en el directorio 'node_modules', asegurando que el entorno de desarrollo este listo para operar.
+
+Estado y props
+Respecto al funcionamiento interno de React, el concepto de estado y de props es fundamental. Las props (propiedades) son valores o metodos que un componente recibe de su componente padre. estas son inmutables, es decir que el componente que las recibe no puede modificarlas. En cambio, el estado es informacion interna de un componente que puede cambiar a lo largo del tiempo. Los componentes funcionales modernos manejan el estado mediante un hook llamado useState. 
+Por ejemplo: Un contador simple que incrementa su valor al hacer click en un boton puede escribirse asi
+...
+import + {useState} form "react";
+function Contador (){
+	const [cont,setContador] = useState(0);
+	const incrementar = (){
+		set cont (cont + 1)
+	}
+	return(
+		<div>
+			<h1>El valor es: {cont}</h1>
+			<button onClick={()=>incrementar()}>
+			sumar 1
+			</button>
+		</div>
+	)
+}
+...
+Para las propiedades, en cambio, se utiliza el parametro de la funcion a travez de la cual se declara el componente, usualmnte desestructurando en la misma definicion, por ejemplo:
+...
+function Saludar ({nombre}){
+	return(
+		<div>
+			<h1> Hola, {nombre} 
+		</div>
+	)
+}
+...
+
+Invocacion de coponentes
+Dentro de los componentes se pueden y deben hacer uso de otros componentes. Esto significa que habiendo definido un componente inferior (componente hijo), se debe poder utilizar dentro de un componente superior (componente padre) un componente inferior (componente hijo) para esto se hace uso de una sintaxis similar a html, utilizando los simbolos < y >, donde los atributos de la etiqueta de apertura son las props que se heredaran. Por ejemplo:
+...
+function Tarjeta({nombres, apellidos, documento}){
+	...
+	return (
+		<div>
+			...
+			<h1>{apellidos},{nombres}</h1>
+			...
+		</div>
+	);
+}
+...
+import Tarjeta from "[url]";
+function Listado (){
+	...
+	return(
+		<div>
+			...
+			<tarjeta 
+				nombres= "..."
+				apellidos= "..."
+				documento= "..."
+			/>
+			...
+		</div>
+	);
+}
+...
+
+El ciclo de vida de los componentes en React proporciona mecanismos para ejecutar codigo en momentos especificos: Cuando un componente se monta, cuando se actualiza algun estado y cuando se desmonta. En los componentes funcionales, este ciclo de vida se maneja mediante el hook "useEffect". Por ejemplo:
+...
+import {useState,useEffect}from "react";
+function Contador (){
+	const[cont, setCont]=useState(0);
+	useEffect(()=>
+		//se ejecuta al montarse
+		console.log("componente montado");
+		return(()=>{
+			//se ejecuta al desmontar
+			console.log("componente desmontado");
+		})
+	},[]);
+	useEffect(()=>{
+		//se ejecuta al actualizar
+		console.log('cambio cont a: ${cont}');
+	},[cont])
+...
+//falto copiar
+...
+
+//falto copiar
+...
+const nombres = ["juan","maria","pedro"];
+function Listado(){
+	return (
+		<div>
+			<ul>
+				{nombres.map((nombre,index)=>
+				<li key = {
+				)}
+			</ul>
+		</div>
+	)
+}
+...
+Renderizado condicional con &&
+(cortocircuito logico)
+En react, el operador logico && se puede usar para mostrar un elemento solo si una condicion es verdadera. Si la condicion es falsa, React no renderizara nada. Es util cuando no se necesita un "else" o una opcion alternativa. Estetipo de renderizado se llama cortocircuito logico porque si la primer parte es falsa, no se evalua o muestra la 2da.
+...
+export default function Mensaje ({logged}){
+	return (
+		<div>
+			<h1>Bienvenido</h1>
+			{!logged &&
+				<h2>Inicie sesion</h2>
+			}
+		</div>
+	)
+}
+...
+
+Renderizado condicional con if
+El renderizado condicional con if permite mostrar diferentes eleentos en la UI segun una condicion. Este elije entre una opcion u otra, pero siempre debe retornar algo. Se puede utilizar else y else if.
+...
+function Mensaje({logged}){
+	if (logged){
+		return(
+			<div>
+				<h1>Bienvenido</h1>
+			</div>
+			)
+	}else{
+		return(
+			<div>
+				<h1>Inicie sesion</h1>
+			</div>
+		)
+	}
+}
+...
+Renderizado condicional con operador terniario
+El operador ternario permite escribir condiciones de manera mas compacta dentro de jsx. Este solo puede tener un valor por elemento para en caso que la condicion sea verdadera y otro en caso de que sea falsa. Se utiliza de la siguiente forma: condicion ? valor_true : valor_false;
+...
+function Mensaje({logged}){
+	return (
+		<div>
+			{ logged ?
+				<h1>Bienvenido</h1>
+			:
+				<h1>Inicia sesion</h1>
+			}
+		</div>
+	)
+}
+...
+hooks personalizados
+Un hook personalizado en react es una funcion que comienza con "use" y puede usar otros hooks (como useState, useEffect, etc). Permite extraer la logica con estado para utilizarla en diferentes componentes, manteniendo el codigo organizado y evitando repeticiones. No son nuevas funcionalidades de react, sino un patron para ser reutilziados.
+...
+use Toogle.jsx
+import {useState} from "react";
+export default function useToggle (valorInicial = false){
+	const[valor,setValor] = useState(valorInicial);
+	const cambiar = () =>{
+		setValor(!valor);
+	}
+	return[valor, cambiar];
+}
+...
+import useToggle from "./hooks/useToggle";
+export default function MiComponente(){
+	const[llave, cambiarLLave] = useToggle();
+	return(
+		<div>
+			<h1>El estado de la llave es
+			{llave ? <b>ON</b>:<b>OFF</b>}
+			<button
+				onClick = {()=>cambiarLLave()}
+			>Cambiar Llave</button>
+			</h1>
+		</div>
+	)
+}
+...
+Fragment
+los react fragments son una forma de agrupar multiples elementos jsx sin añadir un nodo extra al dom. Se utilizan para evitar envolver elementos en un div innesesario cuando se requiere devolver multiples elementos desde un componente. Esto ayuda a mantener el dom limpio y estructurado. Se puede utilizar mediante la etiqueta <fragment>, o simplemente <></>.
+...
+import {Fragment} from "react";
+export default function MiComponente(){
+	return(
+		<Fragment>
+			<>
+				<h1>Ejemplo</h1>
+				<p>Ejemplo 1</p>
+			</>
+			<>
+				<h1>Otro Ejemplo</h1>
+				<p>Ejemplo 2</p>
+			</>
+		</Fragment>
+	);
+}
+...

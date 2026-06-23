@@ -1,0 +1,198 @@
+12/03/2026
+
+Tipos de funciones en JS:
+
+Funciones delcaradas
+una funcion delcarada es aquella que se define con un nombre identificador, utilizando la palabra clave "function" seguida de un nombre, una lista de parametros entre parentesis, y un bloque de codigo entre llaves. Este tipo de funcion se "eleva", lo que signfiica que su definicion es procesada antes de ejecutar cualquier codigo, permitiendo su invocacion antes de su aparicion textual en el archivo fuente.
+ejemplo:
+	function sumar(a,b=0){   //"b=0" porque funciona asi: Si el parametro viene vacio (b), se define b como 0
+		return(a+b);
+	}
+	
+Funciones expresadas o Anonimas
+Son unas funciones definidas como parte de una exprecion mas amplia, comunmente asignada a una variable o pasada como argumento. A diferencia de las declaradas, las expresadas no son elevadas, por lo que no se puede acceder a ellas antes de su definicion. Estas son idelales para usar como metodos dentro de objetos literales, ya que se vinculan al contexto.
+ejemplo:
+	const restar= function(a,b=0){
+		return(a-b);
+	}
+	
+Funciones flechas
+Introducidas en ES6,representan una forma  mas consisa de escribir funciones expresadas. Utilizan las sintaxis "()=>{}" y a diferencia de las funciones tradicionales no vinculan su propio contexto "this". Por esta razon no se recomienda utilzarlas como metodos dentro de objetos literales si se necesita acceder a los atributos mediante "this".
+ejemplo:
+	const multiplicar = (a,b=0)=>a*b;
+	
+	//usar llaves si se usa mas de una linea de codigo y usar return.
+	//no usar llaves si se usa solo una linea de codigo que se retornara.
+	
+	
+16/03/2026
+
+Asincronia en JS:
+
+CallBacks
+Un CallBack es una funcion que se pasa como argumento a otra funcion y que es invocada una vez que se completa una operacon asincrona. Si bien es el fundamento historico sobre el cual se construye la asincronia en JS, actualmente no seutiliza generalmente ya que en proyectos complejos puede derivar en un codigo dificil de mantener ("callbacks hell").
+ejemplo:
+	function obtenerDatos(callback){
+		setTimeout ( () => {
+			//tarea asincrona
+			const datos = {nombre:"juan",...};
+			callback(datos);
+		},2000);
+	};		//crear
+	obtenerDatos( (datos) => {
+		console.log(datos);
+	});		//consumo
+
+Promesas
+Una promesa es una representacion de un valor que puede estar disponible ahora, en el futuro, o nunca. Proporciona uan estructura mucho mas robusta y lejible que los callbacks para manejar resultados diferidos, y sera el estandar que utilizaremos ara la comunicacion con abses de datos y api's.
+ejemplo:
+	function miPomesa(){
+		return new Promise((resolve, reject)=>{
+			//accion asincrona
+			timeout(()=>{
+				datos= {nombre:"juan",...};
+				resolve(datos)//si no hay error
+				//reject(error) si hay error
+			},2000);
+		});
+	}
+
+then/catch
+La sintaxis then/catch es la forma mas estructurada de consumirpromesas. Esta forma permite encadenar multiples operaciones asincronas y definir un bloque de instrucciones que se ejecute al finalizar, sea cual sea rel resultado.
+ejemplo:
+	miPromesa(){
+		.then(( datos)=>{
+			//exito
+			console.log(datos);
+		})
+		.catch( (error)=>{
+			//fallo
+			console.error(error);
+		})
+		//opcional:
+		.finally( ()=>{
+			//exito
+			console.log("termino");
+		})
+	}
+
+Async/await
+Es una abstraccion moderna introducida en el ES8 que permite escribir codigo asincrono en JS con una sintaxis similar al codigo cotidiano, facilitando su lectura, mantenimiento y comprension.
+ejemplo:
+	async function otraFuncion(){
+		try{
+			const datos= await miPromesa();}
+			//exito
+			console.log(datos);
+		}catch(error){
+			//fallo
+			console.error(error);
+		}
+		//siempre
+		console.log("terminado");
+	}
+
+Objetos y Arrays:
+
+Objetos por clase
+Un objeto por clase es una instancia creada a partir de una clase, que es una plantilla o molde para consturir objetos con ciertas propiedades y comportamientos definidos. Una clase puede tener un constructor, que define como se crea el objeto, que propiedades tendra ademas tiene sus metodos.
+ejemplo:
+	class Persona(){
+		constructor(nombre, edad){
+			this.nombre= nombre;
+			this.edad = edad;
+		}
+		function saludar (){
+			return (`hola, soy ${this.nombre}`});
+		}
+	}
+	const nuevaPersona = new Persona("juan",26);
+	console.log(nuevaPersona.saludar());
+
+18/03/2026
+
+Objetos literales / Objeto normal
+Un objeto literal es una forma directa y consisa de crear un objeto en JS, usando la sintaxis de llaves "{}". Se definen los pares clave-valor y los metodos dentro de esas llaves, sin necesidad de usar clases ni constructures.
+ejemplo:
+	const persona = {
+		nombre: "juan",
+		edad: 26,
+		saludar: function (){
+			console.log(`hola, soy ${this.nombre}`)
+		}
+	}
+
+Arrays
+Un array en JS es un tipo especial de objeto que permite almacenar una coleccion ordenada de elementos. Cada elemento esta asosiado a un indice numerico que comienza en el 0. Tiene multiples y utiles metodos que permiten trabajar con los elementos para por ejemplo ordenarlos, filtrarlos o ejecutar funciones para cada uno. Se accede a cada elemento a traves de su indice con la notacion de corchetes "[]".
+ejemplo:
+	const frutas = ["naranja","manzana"];
+	console.log(frutas[1]) // "manzana"
+	console.log(frutas.length) // 2
+	frutas.push("pera") // ["naranja","manzana","pera"]
+
+Metodos de los arrays en JS:
+
+En JS los arrays cuentan con una serie de metodos que permiten manipular, recorrer y transformar sus elementos de manera eficiente. Algunos de los metodos mas importantes son:
+
+".find()"
+Retorna el primer elemento que cumpla con la condicion dada. Es util para poder buscar un objeto especifico dentro de una lista.
+ejemplo:
+	const users = [{id:1,...},{id:2,...},...];
+	const user = user.find((elem)=> elem.id===2);
+	console.log(user); // {id:2,...}
+
+".findIndex()"
+Permite encontrar que posision dentro de el array ocupa un elemento que cumpla cierta condicion.
+ejemplo:
+	const nums = [1,8,15];
+	const pos = nums.findIndex((num)=> num===8);
+	console.log(pos); //1
+
+".some()"
+Verifica si al menos un elemento cumple una condicion. Se utiliza para validar rapidamente la presencia de uno o mas elementos sin necesidad de recorrer todo el array.
+ejemplo:
+	const edades = [12,17,20];
+	const hayMayores = edades.some((edad)=> edad >= 18);
+	console.log(hayMayores); //true
+	
+".every()"
+Verifica si todoslos elementos cumplen con una condicion. Se emplea para validar la integridad de un conjunto de datos.
+ejemplo:
+	const notas = [3,8,10];
+	const aprobado = notas.every((nota)=> nota>=6);
+	console.log(aprobar); //false
+	
+".concat()"
+Permite unir 2 o mas arrays sin modificarlos. Se utiliza para juntar listas.
+ejemplo:
+	const a=[1,2];
+	const b=[3,4];
+	const c= a.concat(b);
+	console.log(c); //[1,2,3,4];
+
+".sort()"
+Ordena los elementos del array modificando el array original. Se aplica un coldback para determinar el nuevo orden.
+ejemplo:
+	const aniales = ["gato","elefante","perro","pez"];
+	animales.sort((a,b) => {
+		if(a<b) return -1;
+		if(b<c) return 1;
+		return 0;
+	});
+	console.log(animales);
+	//["elefante","gato","perro","pez"]
+
+".reduce()"
+Aplica una funcion acumuladora a los elementos del array para reducirlo a un solo valor. Se utiliza por ejemplo para calcular sumas, promedios o transformar estructuras de datos.
+ejemplo:
+	const nums = [1,2,3,4];
+	const suma = nums.reduce((acu,act)=> acu + act, 0);
+	console.log(suma) //10
+	
+".filter()"
+Crea un nuevo array con los elementos que cumplan una condicion dada. Se utiliza para extraer subconjuntos utiles de datos
+ejemplo:
+	const nums = [1,2,3,4];
+	const pares = nums.filter((num)=> num%2 === 0);
+	console.log(pares); //[2,4]
+	

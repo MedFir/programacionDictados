@@ -1,0 +1,169 @@
+Consumo de API REST
+
+Una API (interfaz de programacion de aplicaciones) es un cojunto de reglas y definicones que permiten que diferentes aplicaciones se comuniquen entre si, funcionan como un intermediario que habilita a una aplicacion cliente a solicitar datos,enviarlos, o ejecutar funcionalidades de una aplicacion servidor.
+
+REST (transferencia de estado representacional) es un estilo de arquitectura para diseñar las APIs. 
+Aquellas que siguen los principios REST se denominan API RESTFUL o API REST. Utilizan el estandar http, 
+el mismo que utilizan los navegadores web para la comunicacion.
+
+La funcion principal de una API REST es permitir que un cliente se conecte a un servidor para solicitar y enviar informacion. 
+Comunmente se utiliza el formato JSON (Java Script objet notation) para encapsular los datos recibidos y enviados.
+
+*Componentes de una solicitud HTTP 
+La comunicacion con una API se realiza a travez de petiiones HTTP. Cada peticion esta compuesta por varias partes escenciales:
+-URL (Uniform Resource Location):
+Es la direccion unica que identifica un recurso especifico en un servidor determinado. Por ejemplo:
+http://api.ejemplo.com/v1/usuarios
+METODO | SUBDOMINIO | DOMINIO | EXTENCION DE DOMINIO | RECURSOS
+
+*Metodo:
+Indica la accion que el cliente desea realiar sobre el recurso. Los metodos munamentales son:
+1-GET:
+Solicita y recupera datos de un recurso. No modifica la informacion en el servidor.
+
+2-POST:
+Envia datos al servidor para crear un nuevo registro. Los datos se incluyen en el cuerpo de la peticion.
+
+3-PUT:
+Actualiza un registro existente en le servidor. Tambien puede crear un registro si este no existe.
+
+4-DELETE:
+Elimina un registro especifico del servidor.
+
+*Headers:
+Son pares clave-valor que contienen metadatos sobre la peticion. Pueden incluir informacion como el formato de contenido que se envia (Content-type) o que se espera recibir (Accept) asi como tokens de autentificacion (authorization) para validar la peticion.
+
+*Body:
+Contiene los datos que el cliente envia al servidor. Se utiliza principalmente con los metodos POST y PUT para enviar la informacion necesaria para crear o actualizar un registro. Generalmente, los datos en el cuerpo se formatean como JSON o form data.
+
+*Params (parametros):
+Permiten especificar o filtrar la peticion. Existen 2 tipos:
+1-Patch Params:
+Forman parte de la URL y se usan para identificar un registro unico. Se utiliza tanto en el metodo GET como en el PUT o DELETE. Ejemplo:
+...
+https://api.ejemplo.com/v1/usuarios/123
+...
+
+2-Query Params
+Se agregan al final de la URL despues de un signo de interrogacion. Se utiliza para filtrar, ordenar o paginar los resultados. Generalmente se utiliza en el metodo GET. Ejemplo:
+...
+https://api.ejemplo.com/v1/usuarios?rol=admin&limit=10&offset=0
+...
+
+*Uso de AXIOS en JS
+Axios es una libreria que opera como un cliente http y puede ejecutarse tanto en entornos de navegador como en servidores basados en node.js. Su funcion principal es abstraer y simplficar la complejidad de las peticiones http.
+LA libreria usa promesas, el estandar en JS para la gestion de operaciones asincronas.
+Toda comunicacion de red es una operacion asincrona la aplicacion cliente no puede predecir la latencia de la red 
+ni el tiempo de procesamiento del servidor.
+
+*Instalacion e Integracion en proyetos
+La instalacion de AXIOS en un proyecto se puede realizar mediante el gestor de paquetes NPM. Es el metodo recomendado para entornos de desarrollo en node.js y aplicaciones en front-end modernas. Se instala a travez de la linea de comandos de la siguiente manera:
+...
+npm install axios
+...
+Posteriormente, se importa como un modulo en los archivos JS correspondientes:
+...
+import axios from "axios";
+...
+
+Peticion POST:
+...
+import axios from "axios";
+
+const url = "https://api.ejemplo.com/v1/usuarios";
+const datos = {
+	user: "ejemplo",
+	nombre: "...",
+	rol:"..."
+}
+axios.post (url, datos)
+.then((resp)=>{
+	console.log("usuario creado");
+})
+.catch((error)=>{
+	console.error(error);
+})
+...
+
+Peticion GET:
+...
+const url = "https://api.ejemplo.com/v1/usuarios";
+const config = {
+	params:{rol:"admin", limit:30, offset:0}
+	headers:{...}
+};
+axios.get(url,config)
+.then((resp)=>{
+	console.log(resp.data.usuarios);
+})
+.catch((error)=>{
+	console.error(error);
+});
+...
+ 
+*Wouter
+Wouter es una libreria de enrutamiento para React que se caracteriza por ser extremadamente liviana y simple. Es una alternativa a React Router cuando se necesita un router pequeño, facil de integrar, sin complicaciones en configuracion y que cumpla su funcion basica de cambiar el contenido que se renderiza segun la url, sin necesidad de recargar la pagina.
+Para usar wouter primero se debe instalar mediante npm u otro gestor de paquetes, por ejemplo utilizando el comando:
+...
+npm install wouter
+...
+Luego, los componentes principales que proporciona son:
+"Router", "Route", "Link" y "Switch"
+
+El primer componente establece el contexto para todas las rutas que luego se vayan a definir dentro.
+
+El segundo componente permite definir que elemento o componentes deben renderizarse en una ruta determinada.
+
+Mientras que el componente Link permite navegar entre rutas de manera declarativa. 
+
+Ademas el componente Switch establece que unicamente una de las rutas que contenga podra ser renderizada al mismo tiempo. 
+
+Un ejemplo basico de una aplicacion usando wouter sera el siguiente:
+...
+import {router, switch, route, link} from "wouter";
+function Home(){
+	return (
+		<h1>Pag de inicio</h1>	
+	);
+}
+function Productos(){
+	return (
+		<h1>Pag de productos</h1>
+	)
+}
+export default function APP(){
+	return(
+		<div className="APP">
+			<div className="Header">
+				<link href="/">Home</link>
+				<link href="/Productos">Productos</link>
+			</div>
+			<router>
+				<switch>
+					<route path ="/" component = {Home} />
+					<route path ="/productos" component = {Productos} />
+				</switch>
+			</router>
+		</div>
+	)
+}	
+...
+*hooks de wouter
+Wouter tambien proporciona hooks como "useLocation", que permite leer o cambiar la URL desde el codigo JS, por ejemplo, se puede redireccionar a otra pagina programaticamente utilizando:
+...
+import {useEffect} from "react";
+import {useLocation} from "wouter";
+export default function App (){
+	const [location,navigate] = useLocation();
+	useEffect(()=>{
+		console.log('Pag actual: ${location}');
+	});
+	return(
+		<button
+			onClick={()=>navigate("/otra-pag")}
+		>
+		Navrgar a otra pagina
+		</button>
+	)
+}
+...
