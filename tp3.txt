@@ -1,0 +1,3 @@
+tp 3 de programacion:
+Diseñar y desarrollar nuevamente el trabajo del tp 2, utilizando rutas para separar el formulario de guardar del listado para mostrar las tareas, ademas de consumir la api indicada para almacenar y obtenerlas. Realizar las modificaciones necesarias para implementar las nuevas rutas utilizando wouter y el consumo de la api con axios para listar, guardar, eliminar y cambiar estado de las tareas en la base de datos. Debe tener pagina de inicio, ruta para pagina no encontrada, header y footer.
+miercoles primero, jueves los q no llegaron, lunes los nubs.
