@@ -1,0 +1,12 @@
+backend
+
+Node.js
+Es un entorno de ejecucion de JS del lado del servidor, esto significa que permite ejecutar codigo JS fuera de un navegador web, directamente en una computadora o servidor. Esta construido sobre el motor de JS v8 de chrome, lo que le da un alto rendimiento y velocidad.
+Node.js utiliza un modelo de entrada / salida asyncrono y orientado a eventos. En lugar de esperar a que una operacion termine antes de pasar a la siguiente, node puede iniciar varias operaciones al mismo tiempo y manejar las respuestas a medida que llegan. Es crucial que sea orientado a eventos para escuchar y ejecutar la logica necesaria para responder las solicitudes.
+
+Modulos fundamentales de node.js
+-FS (File System):
+Permite interactuar con el sistema de archivos de la computadora. Se puede usar para leer, escribir, modificar o eliminar archivos y directorios. Contiene las funciones 'fs.readFile()', 'fs.weiteFile()', 'fs.mkdir()', 'fs.unlink()', entre otras.
+
+-Path:
+Proporciona utilidades para trabajar con rutas de archivos y directorios de manera que funcione igual para todos los sistemas operativos (windows, macOS, linux). Cuenta con las funcionalidades 'path.join()', 'path.resolve()', 'path.extname()'
