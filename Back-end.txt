@@ -10,3 +10,203 @@ Permite interactuar con el sistema de archivos de la computadora. Se puede usar 
 
 -Path:
 Proporciona utilidades para trabajar con rutas de archivos y directorios de manera que funcione igual para todos los sistemas operativos (windows, macOS, linux). Cuenta con las funcionalidades 'path.join()', 'path.resolve()', 'path.extname()'
+
+-HTTP Y HTTPS
+Son los modulos claves para crear servidores web y realizar peticiones a otros servidores. HTTPS es la version segura que utiliza ssl / tls. Se usa para crear un servidor con 'http.createServer();', hacer peticiones a apis con 'http.request()' o 'http.get()'.
+
+-OS (Operating System)
+Brinda informacion y utilidades relacionadas con el SO en el que se esta ejecutando el proyecto. Algunas de sus funcionalidades son 'os.cpus()', 'os.totalmem()', 'os.freemem', 'os.homedir()' y 'os.plataform()'.
+
+-Crypto
+Ofrece funcionalidades cryptograficas para realizar tareas de seguridad, como encriptar y desencriptar datos, crear hashes y firmar informacion digitalmente.
+
+
+Proyeto basico
+Para poner en practica el uso de node.js se puede crear un proyecto basico donde se muestre mensajes en la consola:
+1- Crear un nuevo archivo enla carpeta del proyecto llamado 'index.js'.
+2- Para proyectos reales se deberia inicializar y crear el archivo 'package.json' con el comando npm init.
+3- Escribir el siguiente codigo dentro del archivo '.js':
+...
+const prueba = "ejemplo de constante";
+console.log("Primer proyecto");
+console.log(prueba);
+...
+4- Abrir la consola o terminal donde se creo el archivo y ejecutar el siguiente comando:
+'node index.js'
+5- Al ejecutarlo, node.js procesara el archivo y mostrara los mensajes en la misma consola  termianal.
+
+Variables de entorno
+Son valores externos a la app que se utilizan para configurar su comportamiento sin modificar el codigo fuente. Son fundamentales por 2 razones principales:
+1- Seguridad: permite ocultar datos sensibles como contraseñas de BDD, claves de api, o token.secret de JWT, evitando que se suban a repositorios publicos.
+2- Flexibilidad: facilitan el cambio de configuracion, por ejemplo para cambiar al puerto de escucha del servidor http sin cambiar el codigo.
+
+En node.js estas variables almacenan comunmente en un archivo llamado .env y se acceden en el codigo mediante el objeto global process.env.
+
+Implementacion de variables de entorno con dotenv
+Para utilizar archivos dotenv en archivos y utiizar sus variables en un proyecto, se puede utilizar la libreria dotenv de la siguiente manera:
+1- Instalar la dependencia: con 'npm install dotenv'.
+2- Crear el archivo.env en la raiz del proyecto, con sus variables, por ejemplo:
+...
+PORT = 3000
+DB_PASS = Ejemplo124
+TOKEN_SECRET = "clave_123"
+...
+3- Uso en el codigo de JS
+## index.js ##
+...
+require("dotenv").config();
+const port = process.env.PORT || 4000;
+const db_pass = process.env.DB_PASS;
+const {token_secret} = process.env;
+...
+
+Es importante recordar que el archivo .env nunca se debe subir a los repositorios, por esto debe agregarse en el archivo .gitignore
+
+
+Express.js
+Es un framework web minimalista y flexible para node.js que proporciona un conjunto decaracteristicas para el desarrollo de aplicaciones web y apis. Simplifica la creacion de servidores y la gestion de rutas de los endpoints, tambien facilita la administracion de solicitudes y respuestas http.
+
+instalacion
+Para usar express.js, primero se debe instalar en el proyecto de la siguiente manera 'npm install express'
+
+
+/*Falto copiar*/
+/*Falto copiar*/
+/*Falto copiar*/
+/*Falto copiar*/
+/*Falto copiar*/
+/*Falto copiar*/
+/*Falto copiar*/
+
+Metodos de API
+Express.js facilita la definicion de rutas para diferentes metodos HTTP.
+-GET
+Para recuperar datos
+
+-POST
+Para enviar datos y crear nuevos registros
+
+-PUT
+Para actualizar registros existentes
+
+-DELETE 
+Para eliminar registros
+
+Ejemplos de como definir rutas para estos metodos son:
+...
+//GET
+app.get("/usuarios",function(req,res,next){
+	const {busqueda}, req.querx;
+	//consulta a la BD
+	res.status(200).json({usuarios})
+});
+
+//POST
+app.post("/usuarios",function(req,res,next){
+	const {user,pass}, req.body;
+	//consulta a la BD
+	res.status(201).send("OK");
+});
+
+//PUT
+app.put("/usuarios/:usuario_id", (req,res,next)=>{
+	const {usuario_id}, req.params;
+	const {user, pass} = req.body;
+	//consulta a la BD
+	res.status(202).send("usuario actualizado");
+});
+
+//DELETE
+app.delete("/usuarios/:usuario_id", (req,res,next) =>{
+	const {usuario_id}, req.params;
+	//consulta a la BD
+	res.status(200).send("Eliminado");
+});
+
+...
+middlewareLog
+El middlewareLog en JS es toda funcion que tiene acceso al objeto de solicitud (req), al objeto de respuesta (res) y a la siguiente funcion en el ciclo (next) pero no es el endpoint al que desea acceder al cliente. puede realizar tareas como:
+-Ejecutar codigo
+-Realizar cambios en los objetos de solicitud y respuesta
+-Terminar el ciclo de la solicitud
+-Llamar a la siguiente funcion del ciclo.
+
+...
+function middlewareLog (req, res, next){
+	const ruta = req.path;
+	console.log('Un cliente accede a ${ruta}');
+	next();
+};
+app.use("/", moddlewareLog);
+app.get("/", function (req,res,next){
+});
+...
+
+
+Router en express.js
+En express.js, un router es escensialmente una mini app que se puede usar para agrupar rutas relacionadas y middlewars. Actua como un sistema modular para organizar las rutas, haciendolas mas limpias y faciles de mantener, especialmente en aplicaciones grandes.
+
+...
+//usuarios
+const router = require ("exPress").router();
+router.get("/", function(req,res,next){
+	//recurso normal
+});
+module.exports = router;
+
+//index.js
+require ("dotenv").config();
+const express = require("express");
+const usuariosRouter = require(:/usuarios.js");
+const {PORT} = process.env;
+const app = express ();
+app.use("/usuarios",usuariosRouter);
+app.get("/", function(req,res,next){
+	//recurso normal
+});
+app.listen(PORT,function(error){
+	if (error) {
+		console.error(error);
+		process.exit(1);
+	}
+});
+
+...
+
+Conexion a una BD sql
+Para establecer la conexion y ejecutar las consultas a una bd se utilizan librerias especificas para cada tipo. Para MySQL se suele utilizar mysql2 una forma de utilizarla es: 
+
+...
+//db/conexion
+const mysql=require("mysql2");
+const {DB_host, DB_NAME, DB_USER, DB_PASS}=process.env;
+const db = mysql_createPool({
+	host: DB_HOST,
+	database: DB_NAME,
+	user: DB_USER,
+	password: DB_PASS,
+	waitConnections: true,
+	connectionLimit: 10,
+	queueLimit: 0
+})
+module.exports=db;
+...
+
+...
+//api/usuarios.js
+const router = require("express").Router();
+const db = require("../db/conexion");
+. . .
+. . .
+router.get("/", (req, res, next)=>{
+	const sql = "select * from usuarios";
+	db.query(sql)
+	.then(([result])=>{
+		res.status(200).json({usuarios:result});
+	})
+	.catch((error)=>{
+		console.error(error);
+		res.status(500).send(error);
+	})
+})
+...
