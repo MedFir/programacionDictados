@@ -210,3 +210,10 @@ router.get("/", (req, res, next)=>{
 	})
 })
 ...
+
+## Criptografía , hashing y autenticación
+
+La criptografía es el estudio y la aplicación de técnicas para asegurar las comunicaciones y la información frente a terceros no autorizados. En el desarrollo de software moderno y la administración de servidores, es un pilar obligatorio para garantizar la confidencialidad, integridad y autenticidad de los datos de los usuarios.
+
+
+
