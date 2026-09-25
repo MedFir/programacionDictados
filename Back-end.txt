@@ -215,5 +215,7 @@ router.get("/", (req, res, next)=>{
 
 La criptografía es el estudio y la aplicación de técnicas para asegurar las comunicaciones y la información frente a terceros no autorizados. En el desarrollo de software moderno y la administración de servidores, es un pilar obligatorio para garantizar la confidencialidad, integridad y autenticidad de los datos de los usuarios.
 
+Dependiendo de como se gestione las claves de cifrado, la criptografía se divide principal mente en 3 familias: 
 
-
+- **Criptografía Simétrica**: Utiliza una unica clave tanto para cifrar como para descifrar la informacion. El emisor y el receptor deben compartir secretamente dicha clave. Si un atacante la obtiene, toda la comunicacion queda expuesta. El protocolo mas comun es **AES (Advance Encryption Standard)**
+- **Criptografia Asimetrica:** Utiliza un par de claves matematicamente relacionadas, una **clave publica** (que se puede compartir libremente y sirve para cifrar el mensaje) y una **clave privada** ( que el propietario mantiene en secreto y sirve para decifrar) **HTTPS** y **SSH**. Uno de los protocolos mas usado es **RSA.**
