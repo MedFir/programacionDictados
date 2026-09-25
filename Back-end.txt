@@ -219,3 +219,20 @@ Dependiendo de como se gestione las claves de cifrado, la criptografía se divid
 
 - **Criptografía Simétrica**: Utiliza una unica clave tanto para cifrar como para descifrar la informacion. El emisor y el receptor deben compartir secretamente dicha clave. Si un atacante la obtiene, toda la comunicacion queda expuesta. El protocolo mas comun es **AES (Advance Encryption Standard)**
 - **Criptografia Asimetrica:** Utiliza un par de claves matematicamente relacionadas, una **clave publica** (que se puede compartir libremente y sirve para cifrar el mensaje) y una **clave privada** ( que el propietario mantiene en secreto y sirve para decifrar) **HTTPS** y **SSH**. Uno de los protocolos mas usado es **RSA.**
+
+...
+
+## Importancia del Hashing
+
+Un Hash es el resultado de aplicar un algoritmo matemático unidireccional a una entrada de datos de cualquier tamaño (un texto plano, una contraseña, o incluso un archivo completo). Esta función devuelve una cadena de texto de longitud fija, que parece completamente aleatoria y posee propiedades únicas:
+
+- **Unidireccionalidad**: Es matemáticamente inviable realizar el proceso inverso, es decir, no se puede reconstruir el valor original a partir del hash obtenido.
+- **Determinismo**: Una misma entrada siempre producirá exactamente el mismo hash de salida.
+- **Efecto Avalancha**: Si se modifica tan solo un bit o un carácter en la entrada (por ejemplo, cambiar una letra mayúscula a minúscula), el hash resultante cambia de manera drástica y completamente impredecible.
+- **Resistencia a colisiones:** Es extremadamente difícil que dos entradas de datos distintas generen el mismo hash de salida.
+
+---
+
+## Gestión de contraseñas en Node.js con Bcrypt.
+
+Bcrypt es una librería de Hasheo diseñada específicamente para el almacenamiento seguro de contraseñas. A diferencia de funciones Hash de propósito general como SHA - 256, Bcrypt incorpora un factor de costo configurable que permite ajustar la dificulta del calculo, evitando ataques de fuerza bruta, incluso a medida que el hardware se vuelve mas rápido. Además, genera automáticamente una Sal (Salt) aleatoria para cada contraseña, evitando que contraseñas idénticas produzcan el mismo Hash.
